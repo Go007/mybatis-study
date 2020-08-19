@@ -1,11 +1,14 @@
 package com.hong.mybatis.bean;
 
+import org.apache.ibatis.type.Alias;
+
 import java.time.LocalDateTime;
 
 /**
  * @author wanghong
  * @date 2020/08/19 22:34
  **/
+@Alias("order")
 public class Order {
     private Long id;
     private String orderNum;

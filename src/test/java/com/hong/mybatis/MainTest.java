@@ -2,6 +2,7 @@ package com.hong.mybatis;
 
 import com.hong.mybatis.bean.Order;
 import com.hong.mybatis.dao.OrderMapper;
+import com.hong.mybatis.dao.OrderMapperAnnotation;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -20,14 +21,13 @@ import java.io.InputStream;
  * 	mybatis：	Mapper	====>  xxMapper.xml
  *
  * 2、SqlSession代表和数据库的一次会话；用完必须关闭；
- * 3、SqlSession和connection一样她都是非线程安全。每次使用都应该去获取新的对象。
+ * 3、SqlSession和connection一样都是非线程安全。每次使用都应该去获取新的对象。
  * 4、mapper接口没有实现类，但是mybatis会为这个接口生成一个代理对象。
  * 		（将接口和xml进行绑定）
- * 		EmployeeMapper empMapper =	sqlSession.getMapper(EmployeeMapper.class);
+ * 		OrderMapper mapper = openSession.getMapper(OrderMapper.class);
  * 5、两个重要的配置文件：
  * 		mybatis的全局配置文件：包含数据库连接池信息，事务管理器信息等...系统运行环境信息
- * 		sql映射文件：保存了每一个sql语句的映射信息：
- * 					将sql抽取出来。
+ * 		sql映射文件：保存了每一个sql语句的映射信息：将sql抽取出来。
  *
  */
 public class MainTest {
@@ -51,12 +51,10 @@ public class MainTest {
      */
     @Test
     public void test() throws IOException {
-
-        // 2、获取sqlSession实例，能直接执行已经映射的sql语句
+        // 获取sqlSession实例，能直接执行已经映射的sql语句
         // sql的唯一标识：statement Unique identifier matching the statement to use.
         // 执行sql要用的参数：parameter A parameter object to pass to the statement.
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-
         SqlSession openSession = sqlSessionFactory.openSession();
         try {
             Order order  = openSession.selectOne("com.hong.mybatis.dao.OrderMapper.getById", 2L);
@@ -64,7 +62,6 @@ public class MainTest {
         } finally {
             openSession.close();
         }
-
     }
 
     @Test
@@ -77,12 +74,24 @@ public class MainTest {
             // 3、获取接口的实现类对象
             //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
             OrderMapper mapper = openSession.getMapper(OrderMapper.class);
-            Order employee = mapper.getById(2L);
+            Order order = mapper.getById(2L);
             System.out.println(mapper.getClass());
-            System.out.println(employee);
+            System.out.println(order);
         } finally {
             openSession.close();
         }
+    }
 
+    @Test
+    public void test02() throws IOException{
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try{
+            OrderMapperAnnotation mapper = openSession.getMapper(OrderMapperAnnotation.class);
+            Order order = mapper.getById(2);
+            System.out.println(order);
+        }finally{
+            openSession.close();
+        }
     }
 }
