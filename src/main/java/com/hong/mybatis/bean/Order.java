@@ -18,6 +18,17 @@ public class Order {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
+    public Order(){
+
+    }
+
+    public Order(String orderNum, Long userId, String orderStatus, String orderContent) {
+        this.orderNum = orderNum;
+        this.userId = userId;
+        this.orderStatus = orderStatus;
+        this.orderContent = orderContent;
+    }
+
     public Long getId() {
         return id;
     }

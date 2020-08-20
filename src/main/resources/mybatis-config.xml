@@ -52,7 +52,7 @@
 								|JNDI(JndiDataSourceFactory)
 					自定义数据源：实现DataSourceFactory接口，type是全类名
 	-->
-	<environments default="development">
+	<environments default="test">
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
@@ -64,6 +64,16 @@
 				<property name="url" value="${jdbc.url}" />
 				<property name="username" value="${jdbc.username}" />
 				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+
+		<environment id="test">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver2}" />
+				<property name="url" value="${jdbc.url2}" />
+				<property name="username" value="${jdbc.username2}" />
+				<property name="password" value="${jdbc.password2}" />
 			</dataSource>
 		</environment>
 	</environments>
