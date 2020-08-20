@@ -3,6 +3,7 @@ package com.hong.mybatis;
 import com.hong.mybatis.bean.Order;
 import com.hong.mybatis.dao.OrderMapper;
 import com.hong.mybatis.dao.OrderMapperAnnotation;
+import com.hong.mybatis.dao.OrderMapperPlus;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -112,14 +113,14 @@ public class MainTest {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         //1、获取到的SqlSession不会自动提交数据
         SqlSession openSession = sqlSessionFactory.openSession();
-        try{
+        try {
             OrderMapper orderMapper = openSession.getMapper(OrderMapper.class);
-            Order order = new Order("123",1L,"1","手机");
+            Order order = new Order("123", 1L, "1", "手机");
             int insert = orderMapper.addOne(order);
             System.out.println(insert);
             System.out.println(order);// 会把id设置到bean中
 
-            Order order2 = new Order(null,null,"0","电脑");
+            Order order2 = new Order(null, null, "0", "电脑");
             order2.setId(5L);
             boolean update = orderMapper.updateOne(order2);
             System.out.println(update);
@@ -129,41 +130,61 @@ public class MainTest {
 
             //2、手动提交数据
             openSession.commit();
-        }finally {
+        } finally {
             openSession.close();
         }
     }
 
     @Test
-    public void test04() throws IOException{
+    public void test04() throws IOException {
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         SqlSession openSession = sqlSessionFactory.openSession();
 
-        try{
+        try {
             OrderMapper orderMapper = openSession.getMapper(OrderMapper.class);
-            Map<String,Order> map =orderMapper.getListByReturnMap("1");
-            map.forEach((k,v) -> System.out.println(k + "->" + v));
+            Map<String, Order> map = orderMapper.getListByReturnMap("1");
+            map.forEach((k, v) -> System.out.println(k + "->" + v));
 
             List<Order> data = orderMapper.getListByUserId("1");
             System.out.println(data);
 
-            Map<String,Object> orderMap = orderMapper.getOneByReturnMap(5L);
-            orderMap.forEach((k,v) -> System.out.print(k + "->" + v + ","));
+            Map<String, Object> orderMap = orderMapper.getOneByReturnMap(5L);
+            orderMap.forEach((k, v) -> System.out.print(k + "->" + v + ","));
             System.out.println();
 
             Order order = orderMapper.getOne(5L);
             System.out.println(order);
 
             System.out.println("=====================");
-            Map<String,Object> paramMap = new HashMap<>();
-            paramMap.put("id",5L);
-            paramMap.put("tableName","t_order");
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("id", 5L);
+            paramMap.put("tableName", "t_order");
             Order order2 = orderMapper.getOneByMap(paramMap);
             System.out.println(order2);
 
-            Order order3 = orderMapper.getOneByCondition("0","789");
+            Order order3 = orderMapper.getOneByCondition("0", "789");
             System.out.println(order3);
-        }finally{
+        } finally {
+            openSession.close();
+        }
+    }
+
+    @Test
+    public void test05() throws Exception {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            OrderMapperPlus orderMapperPlus = openSession.getMapper(OrderMapperPlus.class);
+            Order order = orderMapperPlus.getOne(5L);
+            System.out.println(order);
+
+            Order order1 = orderMapperPlus.getOneWithUserName(4L);
+            System.out.println(order1);
+
+            Order order2 = orderMapperPlus.getOneWithUserName2(3L);
+            System.out.println(order2);
+
+        } finally {
             openSession.close();
         }
     }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hong.mybatis.dao.OrderMapperPlus">
+
+    <!--自定义某个javaBean的封装规则
+        type：自定义规则的Java类型
+        id:唯一id方便引用
+     -->
+    <resultMap type="com.hong.mybatis.bean.Order" id="MySimpleOrder">
+        <!--指定主键列的封装规则
+        id定义主键会底层有优化；
+        column：指定哪一列
+        property：指定对应的javaBean属性
+          -->
+        <id column="id" property="id"/>
+        <!-- 定义普通列封装规则 -->
+        <result column="order_num" property="orderNum"/>
+        <!-- 其他不指定的列会自动封装：我们只要写resultMap就把全部的映射规则都写上。 -->
+        <result column="order_status" property="orderStatus"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_content" property="orderContent"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- resultMap:自定义结果集映射规则；  -->
+    <select id="getOne"  resultMap="MySimpleOrder">
+		select * from t_order where id=#{id}
+	</select>
+
+    <!--
+	场景一：一对一
+		查询 t_order 的同时查询订单所属的用户
+		Order === User
+	 -->
+
+    <!--
+		联合查询：级联属性封装结果集
+	  -->
+    <resultMap type="com.hong.mybatis.bean.Order" id="MyDifOrder">
+        <id column="id" property="id"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_content" property="orderContent"/>
+
+        <result column="uid" property="user.id"/>
+        <result column="name" property="user.name"/>
+    </resultMap>
+
+    <select id="getOneWithUserName" resultMap="MyDifOrder">
+          select o.id id,o.order_num order_num,o.order_status,o.user_id,o.order_content,u.name name,u.id uid
+          from t_order o,t_user u
+          where o.user_id=u.id and o.id=#{id}
+    </select>
+
+    <!--
+       使用association定义关联的单个对象的封装规则；
+    -->
+    <resultMap type="com.hong.mybatis.bean.Order" id="MyDifOrder2">
+        <id column="id" property="id"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_content" property="orderContent"/>
+
+        <!--  association可以指定联合的javaBean对象
+        property="user"：指定哪个属性是联合的对象
+        javaType:指定这个属性对象的类型[不能省略]
+        -->
+        <association property="user" javaType="com.hong.mybatis.bean.User">
+            <id column="uid" property="id"/>
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="getOneWithUserName2" resultMap="MyDifOrder2">
+          select o.id,o.order_num,o.order_status,o.user_id,o.order_content,u.name,u.id uid
+          from t_order o,t_user u
+          where o.user_id=u.id and o.id=#{id}
+    </select>
+
+</mapper>

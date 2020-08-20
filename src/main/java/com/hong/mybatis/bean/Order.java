@@ -18,6 +18,8 @@ public class Order {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
+    private User user;
+
     public Order(){
 
     }
@@ -85,6 +87,14 @@ public class Order {
         this.updateTime = updateTime;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -95,6 +105,7 @@ public class Order {
                 ", orderContent='" + orderContent + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", user=" + user +
                 '}';
     }
 }
