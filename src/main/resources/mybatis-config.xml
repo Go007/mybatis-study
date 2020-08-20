@@ -115,6 +115,7 @@
 		<!-- 通过 resource一次加载一个映射文件-->
 		<mapper resource="mapper/OrderMapper.xml" />
 		<mapper resource="mapper/OrderMapperPlus.xml" />
+		<mapper resource="mapper/UserMapper.xml" />
 		<mapper class="com.hong.mybatis.dao.OrderMapperAnnotation"/>
 
 		<!-- 批量注册：在IDEA下这种配置要注意的问题：https://blog.csdn.net/qq_31457665/article/details/81080304 -->

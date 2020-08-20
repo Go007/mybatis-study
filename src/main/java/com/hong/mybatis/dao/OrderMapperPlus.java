@@ -15,4 +15,6 @@ public interface OrderMapperPlus {
     Order getOneWithUserName(Long id);
 
     Order getOneWithUserName2(Long id);
+
+    Order getOneByStep(Long id);
 }

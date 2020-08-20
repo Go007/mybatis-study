@@ -82,4 +82,34 @@
           where o.user_id=u.id and o.id=#{id}
     </select>
 
+    <!-- 使用association进行分步查询：
+		1、先按照订单id查询订单信息
+		2、根据查询订单信息中的user_id值去用户表查出用户信息
+		3、用户设置到订单中；
+	 -->
+    <resultMap type="com.hong.mybatis.bean.Order" id="MyOrderByStep">
+        <id column="id" property="id"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_content" property="orderContent"/>
+
+        <!-- association定义关联对象的封装规则
+	 		select:表明当前属性是调用select指定的方法查出的结果
+	 		column:指定将哪一列的值传给这个方法
+
+	 		流程：使用select指定的方法（传入column指定的这列参数的值）查出对象，并封装给property指定的属性
+	 	 -->
+        <association property="user" select="com.hong.mybatis.dao.UserMapper.getOneById" column="user_id"/>
+    </resultMap>
+
+    <select id="getOneByStep" resultMap="MyOrderByStep">
+          select o.id,o.order_num,o.order_status,o.user_id,o.order_content
+          from t_order o
+          where o.id=#{id}
+        <if test="_parameter!=null">
+            and 1=1
+        </if>
+    </select>
+
 </mapper>

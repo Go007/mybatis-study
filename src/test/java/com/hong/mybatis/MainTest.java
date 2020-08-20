@@ -184,6 +184,9 @@ public class MainTest {
             Order order2 = orderMapperPlus.getOneWithUserName2(3L);
             System.out.println(order2);
 
+            Order order3 = orderMapperPlus.getOneByStep(4L);
+            System.out.println(order3);
+
         } finally {
             openSession.close();
         }
