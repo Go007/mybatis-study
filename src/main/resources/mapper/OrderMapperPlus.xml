@@ -112,4 +112,21 @@
         </if>
     </select>
 
+    <!-- 可以使用延迟加载（懒加载）；(按需加载)
+	 	Order==>User：
+	 		我们每次查询 Order 对象的时候，都将一起查询出来。
+	 		User 信息在我们使用的时候再去查询；
+	 		分段查询的基础之上加上两个配置：
+	  -->
+    <!-- ==================association============================ -->
+
+    <!--
+    场景二：
+        查询 User 的时候将 User 对应的所有 Order 信息也查询出来：注释在UserMapper.xml中
+     -->
+    <select id="getOrderListByUserId" resultType="com.hong.mybatis.bean.Order">
+		select * from t_order where user_id=#{userId}
+	</select>
+
+
 </mapper>

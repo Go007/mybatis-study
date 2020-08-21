@@ -12,4 +12,6 @@ public interface UserMapper {
 
     User getOneById(Long id);
 
+    User getOneByIdPlus(Long id);
+
 }

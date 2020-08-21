@@ -1,9 +1,11 @@
 package com.hong.mybatis;
 
 import com.hong.mybatis.bean.Order;
+import com.hong.mybatis.bean.User;
 import com.hong.mybatis.dao.OrderMapper;
 import com.hong.mybatis.dao.OrderMapperAnnotation;
 import com.hong.mybatis.dao.OrderMapperPlus;
+import com.hong.mybatis.dao.UserMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -186,6 +188,20 @@ public class MainTest {
 
             Order order3 = orderMapperPlus.getOneByStep(4L);
             System.out.println(order3);
+
+        } finally {
+            openSession.close();
+        }
+    }
+
+    @Test
+    public void test06() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            UserMapper userMapper = openSession.getMapper(UserMapper.class);
+            User user = userMapper.getOneByIdPlus(1L);
+            System.out.println(user);
 
         } finally {
             openSession.close();

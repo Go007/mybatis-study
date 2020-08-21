@@ -2,6 +2,8 @@ package com.hong.mybatis.dao;
 
 import com.hong.mybatis.bean.Order;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author wanghong
@@ -17,4 +19,6 @@ public interface OrderMapperPlus {
     Order getOneWithUserName2(Long id);
 
     Order getOneByStep(Long id);
+
+   List<Order> getOrderListByUserId(Long userId);
 }

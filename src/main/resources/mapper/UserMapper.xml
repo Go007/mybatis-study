@@ -8,4 +8,32 @@
         select id,name from t_user where id=#{id}
     </select>
 
+    <!--嵌套结果集的方式，使用collection标签定义关联的集合类型的属性封装规则  -->
+    <resultMap type="com.hong.mybatis.bean.User" id="MyUser">
+        <id column="uid" property="id"/>
+        <result column="name" property="name"/>
+        <!--
+            collection定义关联集合类型的属性的封装规则
+            ofType:指定集合里面元素的类型
+        -->
+        <collection property="orderList" ofType="com.hong.mybatis.bean.Order">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <id column="oid" property="id"/>
+            <result column="order_num" property="orderNum"/>
+            <result column="order_status" property="orderStatus"/>
+            <result column="user_id" property="userId"/>
+            <result column="order_content" property="orderContent"/>
+        </collection>
+    </resultMap>
+
+    <select id="getOneByIdPlus" resultMap="MyUser">
+		SELECT u.id uid,u.name,
+				o.id oid,o.order_num,o.order_status,o.order_content,o.user_id
+		FROM t_user u
+		LEFT JOIN t_order o
+		ON u.id=o.user_id
+		WHERE u.id=#{id}
+	</select>
+
+
 </mapper>
