@@ -2,10 +2,7 @@ package com.hong.mybatis;
 
 import com.hong.mybatis.bean.Order;
 import com.hong.mybatis.bean.User;
-import com.hong.mybatis.dao.OrderMapper;
-import com.hong.mybatis.dao.OrderMapperAnnotation;
-import com.hong.mybatis.dao.OrderMapperPlus;
-import com.hong.mybatis.dao.UserMapper;
+import com.hong.mybatis.dao.*;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,6 +11,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -208,6 +206,37 @@ public class MainTest {
             User user1 = userMapper.getOneByIdStep(1L);
             System.out.println(user1);
         } finally {
+            openSession.close();
+        }
+    }
+
+    @Test
+    public void testInnerParam() throws IOException{
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try{
+            OrderMapperDynamicSql mapper = openSession.getMapper(OrderMapperDynamicSql.class);
+            Order order = new Order();
+            order.setOrderStatus("1");
+            List<Order> list = mapper.getOrdersByConditionIf(order);
+            list.forEach(o -> System.out.println(o));
+
+            list = mapper.getOrdersByConditionTrim(order);
+            list.forEach(o -> System.out.println(o));
+
+            list = mapper.getOrdersByConditionChoose(order);
+            list.forEach(o -> System.out.println(o));
+
+            Order order1 = new Order();
+            order1.setId(3L);
+            order1.setOrderContent("iPhone");
+            int update = mapper.updateSelective(order1);
+            System.out.println(update);
+            openSession.commit();
+
+            list = mapper.getOrdersByConditionForeach(Arrays.asList(3L,4L,5L));
+            list.forEach(o -> System.out.println(o));
+        }finally{
             openSession.close();
         }
     }
