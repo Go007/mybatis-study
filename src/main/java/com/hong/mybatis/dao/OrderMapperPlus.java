@@ -21,4 +21,6 @@ public interface OrderMapperPlus {
     Order getOneByStep(Long id);
 
    List<Order> getOrderListByUserId(Long userId);
+
+    List<Order> getListByDiscriminator();
 }

@@ -189,6 +189,8 @@ public class MainTest {
             Order order3 = orderMapperPlus.getOneByStep(4L);
             System.out.println(order3);
 
+            List<Order> list = orderMapperPlus.getListByDiscriminator();
+            System.out.println(list);
         } finally {
             openSession.close();
         }
@@ -203,6 +205,8 @@ public class MainTest {
             User user = userMapper.getOneByIdPlus(1L);
             System.out.println(user);
 
+            User user1 = userMapper.getOneByIdStep(1L);
+            System.out.println(user1);
         } finally {
             openSession.close();
         }

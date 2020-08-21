@@ -129,4 +129,36 @@
 	</select>
 
 
+    <!-- =======================鉴别器============================ -->
+    <!-- <discriminator javaType=""></discriminator>
+        鉴别器：mybatis可以使用discriminator判断某列的值，然后根据某列的值改变封装行为
+        封装Order：
+            如果查出的order_status = 1：就把User信息查询出来;
+            如果查出的order_status = 0：就把 order_num 这一列的值赋值给order_content;
+     -->
+    <resultMap type="com.hong.mybatis.bean.Order" id="MyOrderDis">
+        <id column="id" property="id"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_content" property="orderContent"/>
+        <!--
+            column：指定判定的列名
+            javaType：列值对应的java类型  -->
+        <discriminator javaType="string" column="order_status">
+            <case value="1" resultType="com.hong.mybatis.bean.Order">
+                <association property="user"
+                             select="com.hong.mybatis.dao.UserMapper.getOneById"
+                             column="user_id">
+                </association>
+            </case>
+            <case value="0" resultType="com.hong.mybatis.bean.Order">
+                <result column="order_num" property="orderContent"/>
+            </case>
+        </discriminator>
+    </resultMap>
+
+    <select id="getListByDiscriminator"  resultMap="MyOrderDis">
+		select * from t_order
+	</select>
 </mapper>

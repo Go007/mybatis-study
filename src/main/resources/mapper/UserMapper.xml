@@ -36,4 +36,25 @@
 	</select>
 
 
+    <!-- collection：分段查询 -->
+    <resultMap type="com.hong.mybatis.bean.User" id="MyUserStep">
+        <id column="id" property="id"/>
+        <id column="name" property="name"/>
+        <collection property="orderList"
+                    select="com.hong.mybatis.dao.OrderMapperPlus.getOrderListByUserId"
+                    column="{userId=id}" fetchType="lazy">
+        </collection>
+    </resultMap>
+
+    <select id="getOneByIdStep" resultMap="MyUserStep">
+		select id,name from t_user where id=#{id}
+	</select>
+
+    <!-- 扩展：多列的值传递过去：
+            将多列的值封装map传递；
+            column="{key1=column1,key2=column2}"
+        fetchType="lazy"：表示使用延迟加载；
+                - lazy：延迟
+                - eager：立即
+     -->
 </mapper>
