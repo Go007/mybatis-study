@@ -117,6 +117,8 @@
 		<mapper resource="mapper/OrderMapperPlus.xml" />
 		<mapper resource="mapper/UserMapper.xml" />
 		<mapper resource="mapper/OrderMapperDynamicSql.xml" />
+		<mapper resource="mapper/DepartmentMapper.xml" />
+		<mapper resource="mapper/EmployeeMapper.xml" />
 		<mapper class="com.hong.mybatis.dao.OrderMapperAnnotation"/>
 
 		<!-- 批量注册：在IDEA下这种配置要注意的问题：https://blog.csdn.net/qq_31457665/article/details/81080304 -->
