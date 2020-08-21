@@ -209,7 +209,17 @@ public class MainTest {
 
     @Test
     public void testInnerParam() throws IOException{
-
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try{
+            OrderMapperDynamicSql mapper = openSession.getMapper(OrderMapperDynamicSql.class);
+            Order order = new Order();
+            order.setOrderContent("%i%");
+            List<Order> list = mapper.listByInnerParameter(order);
+            list.forEach(o -> System.out.println(o));
+        }finally{
+            openSession.close();
+        }
     }
 
     @Test

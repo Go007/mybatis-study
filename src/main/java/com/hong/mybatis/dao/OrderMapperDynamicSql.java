@@ -20,4 +20,6 @@ public interface OrderMapperDynamicSql {
     int updateSelective(Order order);
     int batchAdd(@Param("orderList") List<Order> orderList);
     int batchAdd2(@Param("orderList") List<Order> orderList);
+
+    List<Order> listByInnerParameter(Order order);
 }
