@@ -18,5 +18,6 @@ public interface OrderMapperDynamicSql {
     List<Order> getOrdersByConditionChoose(Order order);
     List<Order> getOrdersByConditionForeach(@Param("ids") List<Long> ids);
     int updateSelective(Order order);
-
+    int batchAdd(@Param("orderList") List<Order> orderList);
+    int batchAdd2(@Param("orderList") List<Order> orderList);
 }

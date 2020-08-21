@@ -142,4 +142,84 @@
         </foreach>
     </select>
 
+
+    <!--
+        抽取可重用的sql片段。方便后面引用
+        1、sql抽取：经常将要查询的列名，或者插入用的列名抽取出来方便引用
+        2、include来引用已经抽取的sql：
+        3、include还可以自定义一些property，sql标签内部就能使用自定义的属性
+                include-property：取值的正确方式${prop},
+                #{不能使用这种方式}
+    -->
+    <sql id="insertColumn">
+        <if test="_databaseId=='mysql'">
+            order_num,order_status,order_content,user_id
+        </if>
+    </sql>
+
+
+    <!-- 批量保存 -->
+    <!--MySQL下批量保存：可以foreach遍历   mysql支持values(),(),()语法-->
+    <insert id="batchAdd">
+        insert into t_order(
+        <include refid="insertColumn"></include>
+        )
+        values
+        <foreach collection="orderList" item="order" separator=",">
+            (#{order.orderNum},#{order.orderStatus},#{order.orderContent},#{order.userId})
+        </foreach>
+    </insert>
+
+    <!-- 这种方式需要数据库连接属性allowMultiQueries=true；
+        这种分号分隔多个sql可以用于其他的批量操作（删除，修改） -->
+    <insert id="batchAdd2">
+        <foreach collection="orderList" item="order" separator=";">
+            insert into t_order(order_num,order_status,order_content,user_id)
+            values(#{order.orderNum},#{order.orderStatus},#{order.orderContent},#{order.userId})
+        </foreach>
+    </insert>
+
+
+    <!-- Oracle数据库批量保存：
+        Oracle不支持values(),(),()
+        Oracle支持的批量方式
+        1、多个insert放在begin - end里面
+            begin
+               insert into employees(employee_id,last_name,email)
+               values(employees_seq.nextval,'test_001','test_001@atguigu.com');
+               insert into employees(employee_id,last_name,email)
+               values(employees_seq.nextval,'test_002','test_002@atguigu.com');
+           end;
+       2、利用中间表：
+           insert into employees(employee_id,last_name,email)
+              select employees_seq.nextval,lastName,email from(
+                     select 'test_a_01' lastName,'test_a_e01' email from dual
+                     union
+                     select 'test_a_02' lastName,'test_a_e02' email from dual
+                     union
+                     select 'test_a_03' lastName,'test_a_e03' email from dual
+              )
+    -->
+
+    <insert id="addEmps" databaseId="oracle">
+        <!-- oracle第一种批量方式 -->
+        <!-- <foreach collection="emps" item="emp" open="begin" close="end;">
+            insert into employees(employee_id,last_name,email)
+               values(employees_seq.nextval,#{emp.lastName},#{emp.email});
+        </foreach> -->
+
+        <!-- oracle第二种批量方式  -->
+        insert into employees(
+        <!-- 引用外部定义的sql -->
+        <include refid="insertColumn">
+            <property name="testColomn" value="abc"/>
+        </include>
+        )
+        <foreach collection="emps" item="emp" separator="union"
+                 open="select employees_seq.nextval,lastName,email from("
+                 close=")">
+            select #{emp.lastName} lastName,#{emp.email} email from dual
+        </foreach>
+    </insert>
+
 </mapper>

@@ -11,10 +11,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wanghong
@@ -212,6 +209,29 @@ public class MainTest {
 
     @Test
     public void testInnerParam() throws IOException{
+
+    }
+
+    @Test
+    public void testBatchSave() throws IOException{
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try {
+            OrderMapperDynamicSql mapper = openSession.getMapper(OrderMapperDynamicSql.class);
+            List<Order> orderList = new ArrayList<>();
+            orderList.add(new Order("110",2L,"1","iPad"));
+            orderList.add(new Order("119",2L,"1","Mac"));
+            //int save = mapper.batchAdd(orderList);
+            int save = mapper.batchAdd2(orderList);
+            System.out.println(save);
+            openSession.commit();
+        }finally {
+            openSession.close();
+        }
+    }
+
+    @Test
+    public void testDynamicSql() throws IOException{
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         SqlSession openSession = sqlSessionFactory.openSession();
         try{
