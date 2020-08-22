@@ -7,8 +7,8 @@
     <artifactId>mybatis-study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>ssm-demo</module>
         <module>mybatis-demo</module>
+        <module>ssm-demo</module>
     </modules>
     <packaging>pom</packaging>
 
