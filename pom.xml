@@ -10,6 +10,7 @@
         <module>mybatis-demo</module>
         <module>ssm-demo</module>
         <module>mybatis-mbg</module>
+        <module>mybatis-plugin</module>
     </modules>
     <packaging>pom</packaging>
 
