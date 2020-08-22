@@ -135,5 +135,34 @@ public Employee getEmpById(Integer id);
 		delete from tbl_employee where id=#{id}
 	</delete>
 
+	<!--public List<Employee> getEmps();  -->
+	<select id="getEmps" resultType="com.hong.mybatis.bean.Employee">
+		select id,last_name lastName,email,gender from tbl_employee
+	</select>
 
+	<!-- public void getPageByProcedure();
+1、使用select标签定义调用存储过程
+2、statementType="CALLABLE":表示要调用存储过程
+3、{call procedure_name(params)}
+-->
+	<!--<select id="getPageByProcedure" statementType="CALLABLE" databaseId="oracle">-->
+		<!--{call hello_test(-->
+			<!--#{start,mode=IN,jdbcType=INTEGER},-->
+			<!--#{end,mode=IN,jdbcType=INTEGER},-->
+			<!--#{count,mode=OUT,jdbcType=INTEGER},-->
+			<!--#{emps,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=PageEmp}-->
+		<!--)}-->
+	<!--</select>-->
+	<!--<resultMap type="com.atguigu.mybatis.bean.Employee" id="PageEmp">-->
+		<!--<id column="EMPLOYEE_ID" property="id"/>-->
+		<!--<result column="LAST_NAME" property="email"/>-->
+		<!--<result column="EMAIL" property="email"/>-->
+	<!--</resultMap>-->
+
+
+	<!--public Long addEmp(Employee employee);  -->
+	<insert id="addEmp2" useGeneratedKeys="true" keyProperty="id">
+		insert into tbl_employee(last_name,email,gender,empStatus)
+		values(#{lastName},#{email},#{gender},#{empStatus})
+	</insert>
 </mapper>

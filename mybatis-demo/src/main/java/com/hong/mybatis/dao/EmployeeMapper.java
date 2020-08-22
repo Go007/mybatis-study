@@ -1,11 +1,11 @@
 package com.hong.mybatis.dao;
 
-import java.util.List;
-import java.util.Map;
-
 import com.hong.mybatis.bean.Employee;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface EmployeeMapper {
 
@@ -31,4 +31,7 @@ public interface EmployeeMapper {
 
     void deleteEmpById(Integer id);
 
+    List<Employee> getEmps();
+
+    public Long addEmp2(Employee employee);
 }

@@ -2,7 +2,8 @@
 SQLyog Ultimate v12.08 (64 bit)
 MySQL - 5.6.30 : Database - sign_test
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -61,6 +62,7 @@ CREATE TABLE `tbl_employee` (
   `email` varchar(50) DEFAULT NULL,
   `gender` char(2) DEFAULT NULL,
   `d_id` bigint(50) DEFAULT NULL,
+  empStatus int(32) default null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

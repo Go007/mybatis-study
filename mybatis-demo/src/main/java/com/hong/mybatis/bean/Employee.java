@@ -1,8 +1,8 @@
 package com.hong.mybatis.bean;
 
-import java.io.Serializable;
-
 import org.apache.ibatis.type.Alias;
+
+import java.io.Serializable;
 
 @Alias("emp")
 public class Employee implements Serializable{
@@ -13,8 +13,25 @@ public class Employee implements Serializable{
 	private String gender;
 	private Department dept;
 
+	//员工状态
+	private EmpStatus empStatus=EmpStatus.LOGOUT;
+
 	public Employee() {
 		super();
+	}
+
+	public Employee(String lastName, String email, String gender) {
+		super();
+		this.lastName = lastName;
+		this.email = email;
+		this.gender = gender;
+	}
+
+	public EmpStatus getEmpStatus() {
+		return empStatus;
+	}
+	public void setEmpStatus(EmpStatus empStatus) {
+		this.empStatus = empStatus;
 	}
 
 	public Employee(Integer id, String lastName, String email, String gender,
@@ -34,7 +51,6 @@ public class Employee implements Serializable{
 		this.email = email;
 		this.gender = gender;
 	}
-
 	public Department getDept() {
 		return dept;
 	}

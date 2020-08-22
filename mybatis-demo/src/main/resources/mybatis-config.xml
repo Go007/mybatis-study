@@ -45,6 +45,24 @@
 		<!-- 3、批量起别名的情况下，使用@Alias注解为某个类型指定新的别名 -->
 	</typeAliases>
 
+	<typeHandlers>
+		<!--1、配置我们自定义的TypeHandler  -->
+		<typeHandler handler="com.hong.mybatis.handler.MyEnumEmpStatusTypeHandler" javaType="com.hong.mybatis.bean.EmpStatus"/>
+		<!--2、也可以在处理某个字段的时候告诉MyBatis用什么类型处理器
+				保存：#{empStatus,typeHandler=xxxx}
+				查询：
+					<resultMap type="com.hong.mybatis.bean.Employee" id="MyEmp">
+				 		<id column="id" property="id"/>
+				 		<result column="empStatus" property="empStatus" typeHandler=""/>
+				 	</resultMap>
+				注意：如果在参数位置修改TypeHandler，应该保证保存数据和查询数据用的TypeHandler是一样的。
+		  -->
+	</typeHandlers>
+
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+	</plugins>
+
 	<!--
 		4、environments：环境，mybatis可以配置多种环境 ,default指定使用某种环境。可以达到快速切换环境。
 			environment：配置一个具体的环境信息；必须有两个标签；id代表当前环境的唯一标识
