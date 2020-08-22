@@ -18,6 +18,12 @@
     -->
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+
+		<!--显式的指定每个我们需要更改的配置的值，即使他是默认的。防止版本更新带来的问题  -->
+		<setting name="cacheEnabled" value="true"/>
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<setting name="aggressiveLazyLoading" value="false"/>
 	</settings>
 
 	<!-- 3、typeAliases：别名处理器：可以为我们的java类型起别名
@@ -52,7 +58,7 @@
 								|JNDI(JndiDataSourceFactory)
 					自定义数据源：实现DataSourceFactory接口，type是全类名
 	-->
-	<environments default="test">
+	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
